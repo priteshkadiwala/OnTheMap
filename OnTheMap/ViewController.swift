@@ -11,7 +11,7 @@ import UIKit
 import FBSDKShareKit
 import FBSDKLoginKit
 
-class ViewController: UIViewController, FBSDKLoginButtonDelegate {
+class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     
 
     
@@ -26,10 +26,17 @@ class ViewController: UIViewController, FBSDKLoginButtonDelegate {
         Password.secureTextEntry = true
         loginButton.delegate = self
         loginButton.readPermissions = ["public_profile","email","user_friends"]
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
+        view.addGestureRecognizer(tap)
+        
         
 
     }
-
+    
+    func dismissKeyboard() {
+        //Causes the view (or one of its embedded text fields) to resign the first responder status.
+        view.endEditing(true)
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -65,6 +72,28 @@ class ViewController: UIViewController, FBSDKLoginButtonDelegate {
         request.HTTPBody = "{\"udacity\": {\"username\": \"\(Email.text!)\", \"password\": \"\(Password.text!)\"}}".dataUsingEncoding(NSUTF8StringEncoding)
         
         let session = NSURLSession.sharedSession()
+        var reponseError: NSError?
+        var response: NSURLResponse?
+        
+        var urlData: NSData?
+        do {
+            urlData = try NSURLConnection.sendSynchronousRequest(request, returningResponse:&response)
+        } catch let error as NSError {
+            reponseError = error
+            urlData = nil
+        }
+        if(urlData == nil){
+            let alertView:UIAlertView = UIAlertView()
+            alertView.title = "Sign in Failed!"
+            alertView.message = "Connection Failure"
+            if let error = reponseError {
+                alertView.message = (error.localizedDescription)
+            }
+            alertView.delegate = self
+            alertView.addButtonWithTitle("OK")
+            alertView.show()
+        }
+        else{
         let task = session.dataTaskWithRequest(request) { data, response, error in
             if error != nil { // Handle error…
                 return
@@ -75,23 +104,46 @@ class ViewController: UIViewController, FBSDKLoginButtonDelegate {
             */
             
             let Dict = try! NSJSONSerialization.JSONObjectWithData(newData, options: .AllowFragments) as! NSDictionary
+        
+            print(Dict["error"])
             
-            let sessionId = Dict["account"]!["registered"] as! Bool!
-            
-            
-            if(sessionId == true){
+            if(Dict["error"] != nil){
                 dispatch_async(dispatch_get_main_queue(), {
-                    self.performSegueWithIdentifier("tabController", sender: self)
-                
+                    let alertController = UIAlertController(title: "Invalid Login", message: "Wrong Credentials", preferredStyle: .Alert)
+                    
+                    let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
+                        // ...
+                    }
+                    alertController.addAction(OKAction)
+                    
+                    self.presentViewController(alertController, animated: true) {
+                        // ...
+                    }
+                    
                 })
+                
+            } else{
+                let sessionId = Dict["account"]!["registered"] as! Bool!
+                if(sessionId == true){
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.performSegueWithIdentifier("tabController", sender: self)
+                        
+                    })
+                }
+                print(sessionId)
             }
             
             
             
+            
+            
+            
+            
             print(NSString(data: newData, encoding: NSUTF8StringEncoding))
-            print(sessionId)
+            
         }
         task.resume()
+        }
     }
     
     

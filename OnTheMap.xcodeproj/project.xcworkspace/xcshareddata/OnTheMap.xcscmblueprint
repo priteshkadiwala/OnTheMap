@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "8B8686DEB7093CF99334DCBB07D079C13C460310",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "8B8686DEB7093CF99334DCBB07D079C13C460310" : 0,
+    "E81C4F446BC58D250A775F05F598597DED2FB1A4" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "1C4025C8-9B29-48E3-B58A-DC3495E7DCCB",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "8B8686DEB7093CF99334DCBB07D079C13C460310" : "OnTheMap\/",
+    "E81C4F446BC58D250A775F05F598597DED2FB1A4" : ""
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "OnTheMap",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "OnTheMap.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/priteshkadiwala\/OnTheMap.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "8B8686DEB7093CF99334DCBB07D079C13C460310"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/priteshkadiwala\/onthemap.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "E81C4F446BC58D250A775F05F598597DED2FB1A4"
+    }
+  ]
+}

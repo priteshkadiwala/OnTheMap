@@ -39,7 +39,8 @@ class pinViewController: UIViewController, MKMapViewDelegate{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
+        view.addGestureRecognizer(tap)
         
         localSearchRequest = MKLocalSearchRequest()
         localSearchRequest.naturalLanguageQuery = text
@@ -69,6 +70,10 @@ class pinViewController: UIViewController, MKMapViewDelegate{
         
         
         
+    }
+    func dismissKeyboard() {
+        //Causes the view (or one of its embedded text fields) to resign the first responder status.
+        view.endEditing(true)
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

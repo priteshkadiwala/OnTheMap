@@ -18,9 +18,9 @@ class ListViewController: UITableViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let myVc = MapViewController()
         
-        let locations = myVc.hardCodedLocationData()
+        
+        let locations = somethingElse()
         
         count = locations.count
         tableView.reloadData()
@@ -34,11 +34,11 @@ class ListViewController: UITableViewController{
         
         let cell = tableView.dequeueReusableCellWithIdentifier("ompCell")! as UITableViewCell
         
-        let locations = MapViewController().hardCodedLocationData()
+        let locations = somethingElse()
         
         for dictionary in locations{
-            let first = dictionary["firstName"] as! String
-            let last = dictionary["lastName"] as! String
+            let first = dictionary.firstName 
+            let last = dictionary.lastName 
             
             cell.textLabel?.text = "\(first) \(last)"
             return cell

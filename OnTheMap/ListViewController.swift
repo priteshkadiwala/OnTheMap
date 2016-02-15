@@ -20,9 +20,9 @@ class ListViewController: UITableViewController{
         super.viewDidLoad()
         
         
-        let locations = somethingElse()
+     
         
-        count = locations.count
+        count = Api.count
         tableView.reloadData()
     }
     
@@ -34,9 +34,9 @@ class ListViewController: UITableViewController{
         
         let cell = tableView.dequeueReusableCellWithIdentifier("ompCell")! as UITableViewCell
         
-        let locations = somethingElse()
+
         
-        for dictionary in locations{
+        for dictionary in Api{
             let first = dictionary.firstName 
             let last = dictionary.lastName 
             

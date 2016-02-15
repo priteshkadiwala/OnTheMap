@@ -8,8 +8,10 @@
 
 import Foundation
 
+var Api = [parseApi]()
 
-func hardCodedLocationData(completionHandler: ([parseApi])->()) {
+func hardCodedLocationData(completionHandler: ([[String : AnyObject]])-> Void) {
+    
     
     let applicationId = "QrX47CA9cyuGewLdsL7o5Eb8iug6Em8ye0dnAbIr"
     let restAPI = "QuWThTdiRmTux3YaDseUSEpUKo7aBYM737yKd4gY"
@@ -19,8 +21,6 @@ func hardCodedLocationData(completionHandler: ([parseApi])->()) {
     request.addValue(applicationId, forHTTPHeaderField: "X-Parse-Application-Id")
     request.addValue(restAPI, forHTTPHeaderField: "X-Parse-REST-API-Key")
     let session = NSURLSession.sharedSession()
-    var myAPIArray: [parseApi] = []
-    var arr = NSArray()
     let task = session.dataTaskWithRequest(request) { data, response, error in
         if error != nil { // Handle error...
             return
@@ -29,20 +29,10 @@ func hardCodedLocationData(completionHandler: ([parseApi])->()) {
         //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
         
         
-        let Dict = try! NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers) as! NSDictionary
-        //print(Dict["results"])
-        arr = Dict["results"] as! NSArray
-        
-        for i in arr{
-            //print(i)
-            let myObject: parseApi = parseApi(createdAt: i["createdAt"] as! String, firstName: i["firstName"] as! String, lastName: i["lastName"] as! String, latitude: i["latitude"] as! Double, longitude: i["longitude"] as! Double, mapString: i["mapString"] as! String, mediaURL: i["mediaURL"] as! String, objectId: i["objectId"] as! String, uniqueKey: i["uniqueKey"] as! String, updatedAt: i["updatedAt"] as! String)
-            
-            myAPIArray.append(myObject)
-            
-            
-        }
-        
-        completionHandler(myAPIArray)
+        let Dict = try! NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers) as! [[String : AnyObject]]
+        //print(Dict)
+        Api = parseApi.somethingElse(Dict)
+        completionHandler(Dict)
         
         
     }
@@ -52,14 +42,7 @@ func hardCodedLocationData(completionHandler: ([parseApi])->()) {
 }
 
 
-func somethingElse() -> [parseApi] {
-    var myAPIArray: [parseApi] = []
-    hardCodedLocationData { (arr) -> () in
-        myAPIArray = arr
-    }
-    //print(myAPIArray)
-    return myAPIArray
-}
+
 
 struct parseApi{
     
@@ -98,7 +81,30 @@ struct parseApi{
             
             
     }
+    init(dictionary: [String : AnyObject]){
+            
+            createdAt = dictionary["createdAt"] as! String
+            firstName = dictionary["firstName"] as! String
+            lastName = dictionary["lastName"] as! String
+            latitude = dictionary["latitude"] as! Double
+            longitude = dictionary["longitude"] as! Double
+            mapString = dictionary["mapString"] as! String
+            mediaURL = dictionary["mediaURL"] as! String
+            objectId = dictionary["objectId"] as! String
+            uniqueKey = dictionary["uniqueKey"] as! String
+            updatedAt = dictionary["updatedAt"] as! String
+            
+            
+    }
     
+    static func somethingElse(Dict: [[String : AnyObject]]) -> [parseApi] {
+        var myAPIArray = [parseApi]()
+        for item in Dict{
+            myAPIArray.append(parseApi(dictionary: item))
+        }
+        //print(myAPIArray)
+        return myAPIArray
+    }
     
     
 }

@@ -58,18 +58,18 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIActionSheetDeleg
         
         // The "locations" array is an array of dictionary objects that are similar to the JSON
         // data that you can download from parse.
-        let locations = somethingElse
+       
         
         // We will create an MKPointAnnotation for each dictionary in "locations". The
         // point annotations will be stored in this array, and then provided to the map view.
         var annotations = [MKPointAnnotation]()
-        
+        hardCodedLocationData(){ errorMessage in
         // The "locations" array is loaded with the sample data below. We are using the dictionaries
         // to create map annotations. This would be more stylish if the dictionaries were being
         // used to create custom structs. Perhaps StudentLocation structs.
         
-        
-        for dictionary in locations() {
+        //print(Api)
+        for dictionary in  Api{
             
             // Notice that the float values are being used to create CLLocationDegree values.
             // This is a version of the Double type.
@@ -92,6 +92,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIActionSheetDeleg
             // Finally we place the annotation in an array of annotations.
             annotations.append(annotation)
             
+            }
         }
         
         print(annotations.count)

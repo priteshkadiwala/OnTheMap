@@ -63,7 +63,6 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIActionSheetDeleg
         // We will create an MKPointAnnotation for each dictionary in "locations". The
         // point annotations will be stored in this array, and then provided to the map view.
         var annotations = [MKPointAnnotation]()
-        hardCodedLocationData(){ errorMessage in
         // The "locations" array is loaded with the sample data below. We are using the dictionaries
         // to create map annotations. This would be more stylish if the dictionaries were being
         // used to create custom structs. Perhaps StudentLocation structs.
@@ -92,10 +91,10 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIActionSheetDeleg
             // Finally we place the annotation in an array of annotations.
             annotations.append(annotation)
             
-            }
         }
         
-        print(annotations.count)
+        
+        //print(annotations.count)
         // When the array is complete, we add the annotations to the map.
         self.mapView.addAnnotations(annotations)
         

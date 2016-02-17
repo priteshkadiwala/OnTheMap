@@ -30,7 +30,7 @@ func hardCodedLocationData(completionHandler: ([[String : AnyObject]])-> Void) {
         
         
         let Dict = try! NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers) as! [[String : AnyObject]]
-        //print(Dict)
+        print(Dict)
         Api = parseApi.somethingElse(Dict)
         completionHandler(Dict)
         

@@ -55,7 +55,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIActionSheetDeleg
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        hardCodedLocationData();
         // The "locations" array is an array of dictionary objects that are similar to the JSON
         // data that you can download from parse.
        

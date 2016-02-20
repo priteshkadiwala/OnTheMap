@@ -10,7 +10,7 @@ import Foundation
 
 var Api = [parseApi]()
 
-func hardCodedLocationData(completionHandler: ([[String : AnyObject]])-> Void) {
+func hardCodedLocationData() {
     
     
     let applicationId = "QrX47CA9cyuGewLdsL7o5Eb8iug6Em8ye0dnAbIr"
@@ -29,10 +29,10 @@ func hardCodedLocationData(completionHandler: ([[String : AnyObject]])-> Void) {
         //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
         
         
-        let Dict = try! NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers) as! [[String : AnyObject]]
-        print(Dict)
+        let Dict = try! NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers) as! [String: AnyObject]
+        //print(Dict)
         Api = parseApi.somethingElse(Dict)
-        completionHandler(Dict)
+        //completionHandler(Dict)
         
         
     }
@@ -81,26 +81,27 @@ struct parseApi{
             
             
     }
-    init(dictionary: [String : AnyObject]){
+    init(dictionary: [String: AnyObject]){
             
-            createdAt = dictionary["createdAt"] as! String
-            firstName = dictionary["firstName"] as! String
-            lastName = dictionary["lastName"] as! String
-            latitude = dictionary["latitude"] as! Double
-            longitude = dictionary["longitude"] as! Double
-            mapString = dictionary["mapString"] as! String
-            mediaURL = dictionary["mediaURL"] as! String
-            objectId = dictionary["objectId"] as! String
-            uniqueKey = dictionary["uniqueKey"] as! String
-            updatedAt = dictionary["updatedAt"] as! String
+            createdAt = dictionary["createdAt"]! as! String
+            firstName = dictionary["firstName"]! as! String
+            lastName = dictionary["lastName"]! as! String
+            latitude = dictionary["latitude"]! as! Double
+            longitude = dictionary["longitude"]! as! Double
+            mapString = dictionary["mapString"]! as! String
+            mediaURL = dictionary["mediaURL"]! as! String
+            objectId = dictionary["objectId"]! as! String
+            uniqueKey = dictionary["uniqueKey"]! as! String
+            updatedAt = dictionary["updatedAt"]! as! String
             
             
     }
     
-    static func somethingElse(Dict: [[String : AnyObject]]) -> [parseApi] {
+    static func somethingElse(Dict: [String: AnyObject]) -> [parseApi] {
         var myAPIArray = [parseApi]()
         for item in Dict{
-            myAPIArray.append(parseApi(dictionary: item))
+    
+            myAPIArray.append(parseApi(dictionary: (item)))
         }
         //print(myAPIArray)
         return myAPIArray

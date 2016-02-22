@@ -55,7 +55,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIActionSheetDeleg
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        hardCodedLocationData();
+        
         // The "locations" array is an array of dictionary objects that are similar to the JSON
         // data that you can download from parse.
        
@@ -68,6 +68,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIActionSheetDeleg
         // used to create custom structs. Perhaps StudentLocation structs.
         
         //print(Api)
+        hardCodedLocationData()
         for dictionary in  Api{
             
             // Notice that the float values are being used to create CLLocationDegree values.

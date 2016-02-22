@@ -29,11 +29,13 @@ func hardCodedLocationData() {
         //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
         
         
-        let Dict = try! NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers) as! [String: AnyObject]
-        //print(Dict)
-        Api = parseApi.somethingElse(Dict)
+        let someData:AnyObject? = try! NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers)
+        if let results = someData!.valueForKey("results") as? [[String : AnyObject]] {
+            // here somethingElse should get [[String : AnyObject]] as input parameter.
+            Api = parseApi.somethingElse(results)
+        }
         //completionHandler(Dict)
-        
+        print(Api)
         
     }
     task.resume()
@@ -97,7 +99,7 @@ struct parseApi{
             
     }
     
-    static func somethingElse(Dict: [String: AnyObject]) -> [parseApi] {
+    static func somethingElse(Dict: [[String: AnyObject]]) -> [parseApi] {
         var myAPIArray = [parseApi]()
         for item in Dict{
     

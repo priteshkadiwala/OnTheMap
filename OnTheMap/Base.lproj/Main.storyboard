@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="2aJ-DR-Wh1">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
@@ -550,6 +550,7 @@
                         <outlet property="Password" destination="ZSu-Mw-TB8" id="46a-LW-yic"/>
                         <outlet property="loginButton" destination="GAU-UL-9zu" id="mYD-9a-eU6"/>
                         <segue destination="2aJ-DR-Wh1" kind="presentation" identifier="tabController" id="4Q8-nD-k8S"/>
+                        <segue destination="A2p-bG-Sh5" kind="show" identifier="pinView" id="tcw-Ie-czE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -581,5 +582,6 @@
     <inferredMetricsTieBreakers>
         <segue reference="aJv-WP-GJS"/>
         <segue reference="4Q8-nD-k8S"/>
+        <segue reference="tcw-Ie-czE"/>
     </inferredMetricsTieBreakers>
 </document>

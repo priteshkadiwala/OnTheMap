@@ -8,40 +8,7 @@
 
 import Foundation
 
-var Api = [parseApi]()
 
-func hardCodedLocationData() {
-    
-    
-    let applicationId = "QrX47CA9cyuGewLdsL7o5Eb8iug6Em8ye0dnAbIr"
-    let restAPI = "QuWThTdiRmTux3YaDseUSEpUKo7aBYM737yKd4gY"
-    
-    
-    let request = NSMutableURLRequest(URL: NSURL(string: "https://api.parse.com/1/classes/StudentLocation?limit=100&order=-createdAt")!)
-    request.addValue(applicationId, forHTTPHeaderField: "X-Parse-Application-Id")
-    request.addValue(restAPI, forHTTPHeaderField: "X-Parse-REST-API-Key")
-    let session = NSURLSession.sharedSession()
-    let task = session.dataTaskWithRequest(request) { data, response, error in
-        if error != nil { // Handle error...
-            return
-        }
-        
-        //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
-        
-        
-        let someData:AnyObject? = try! NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers)
-        if let results = someData!.valueForKey("results") as? [[String : AnyObject]] {
-            // here somethingElse should get [[String : AnyObject]] as input parameter.
-            Api = parseApi.somethingElse(results)
-        }
-        //completionHandler(Dict)
-        print(Api)
-        
-    }
-    task.resume()
-    
-    
-}
 
 
 
@@ -99,7 +66,7 @@ struct parseApi{
             
     }
     
-    static func somethingElse(Dict: [[String: AnyObject]]) -> [parseApi] {
+    static func downloadLocation(Dict: [[String: AnyObject]]) -> [parseApi] {
         var myAPIArray = [parseApi]()
         for item in Dict{
     

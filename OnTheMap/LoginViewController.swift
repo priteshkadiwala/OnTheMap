@@ -19,7 +19,10 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     @IBOutlet weak var Email: UITextField!
     @IBOutlet weak var Password: UITextField!
     
-    
+    override func viewWillDisappear(animated: Bool) {
+        performSegueWithIdentifier("pinView", sender: self)
+        
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,7 +50,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     }
     
     
-    public func loginButton(loginButton: FBSDKLoginButton!, didCompleteWithResult result: FBSDKLoginManagerLoginResult!, error: NSError!){
+    internal func loginButton(loginButton: FBSDKLoginButton!, didCompleteWithResult result: FBSDKLoginManagerLoginResult!, error: NSError!){
         if(error != nil)
         {
             print(error.localizedDescription)
@@ -59,7 +62,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         
     }
     
-    public func loginButtonDidLogOut(loginButton: FBSDKLoginButton!){
+    internal func loginButtonDidLogOut(loginButton: FBSDKLoginButton!){
         
     }
     
@@ -105,7 +108,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
             
             let Dict = try! NSJSONSerialization.JSONObjectWithData(newData, options: .AllowFragments) as! NSDictionary
         
-            print(Dict["error"])
+            //print(Dict["error"])
             
             if(Dict["error"] != nil){
                 dispatch_async(dispatch_get_main_queue(), {
@@ -123,6 +126,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
                 })
                 
             } else{
+               
                 let sessionId = Dict["account"]!["registered"] as! Bool!
                 if(sessionId == true){
                     dispatch_async(dispatch_get_main_queue(), {
@@ -130,22 +134,30 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
                         
                     })
                 }
-                print(sessionId)
+              
+                //print(Dict["account"])
             }
             
-            
-            
-            
-            
-            
-            
-            print(NSString(data: newData, encoding: NSUTF8StringEncoding))
+            //print(NSString(data: newData, encoding: NSUTF8StringEncoding))
             
         }
         task.resume()
+      
+        }
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
+        if (segue.identifier == "pinView") {
+            let detailVC = pinViewController()
+            detailVC.email = Email
+            detailVC.password = Password
+            
         }
     }
     
     
+    
 }
+
+
 

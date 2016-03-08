@@ -45,6 +45,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIActionSheetDeleg
     var objectId : String = ""
     var uniqueKey : String = ""
     var updatedAt : String = ""
+
     
     // The map. See the setup in the Storyboard file. Note particularly that the view controller
     // is set up as the map view's delegate.
@@ -68,37 +69,47 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIActionSheetDeleg
         // used to create custom structs. Perhaps StudentLocation structs.
         
         //print(Api)
-        hardCodedLocationData()
-        for dictionary in  Api{
+        getLocationData() { success, error in
+            if (success == true){
+                for dictionary in Api{
+                    //print(dictionary)
+                    // Notice that the float values are being used to create CLLocationDegree values.
+                    // This is a version of the Double type.
+                    let lat = CLLocationDegrees(dictionary.latitude)
+                    let long = CLLocationDegrees(dictionary.longitude)
             
-            // Notice that the float values are being used to create CLLocationDegree values.
-            // This is a version of the Double type.
-            let lat = CLLocationDegrees(dictionary.latitude)
-            let long = CLLocationDegrees(dictionary.longitude)
+                    // The lat and long are used to create a CLLocationCoordinates2D instance.
+                    let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
             
-            // The lat and long are used to create a CLLocationCoordinates2D instance.
-            let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
+                    let first = dictionary.firstName
+                    let last = dictionary.lastName
+                    let mediaURL = dictionary.mediaURL
             
-            let first = dictionary.firstName
-            let last = dictionary.lastName
-            let mediaURL = dictionary.mediaURL
+                    // Here we create the annotation and set its coordiate, title, and subtitle properties
+                    let annotation = MKPointAnnotation()
+                    annotation.coordinate = coordinate
+                    annotation.title = "\(first) \(last)"
+                    annotation.subtitle = mediaURL
             
-            // Here we create the annotation and set its coordiate, title, and subtitle properties
-            let annotation = MKPointAnnotation()
-            annotation.coordinate = coordinate
-            annotation.title = "\(first) \(last)"
-            annotation.subtitle = mediaURL
+                    // Finally we place the annotation in an array of annotations.
+                    annotations.append(annotation)
+                    
+                    
+                }
+            }
+            else {
+                let alertView:UIAlertView = UIAlertView()
+                alertView.title = "Error"
+                alertView.message = error
+                alertView.delegate = self
+                alertView.addButtonWithTitle("OK")
+                alertView.show()
+            }
             
-            // Finally we place the annotation in an array of annotations.
-            annotations.append(annotation)
-            
+            print(annotations.count)
+            // When the array is complete, we add the annotations to the map.
+            self.mapView.addAnnotations(annotations)
         }
-        
-        
-        //print(annotations.count)
-        // When the array is complete, we add the annotations to the map.
-        self.mapView.addAnnotations(annotations)
-        
     }
     
     @IBAction func Pin(sender: AnyObject){

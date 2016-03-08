@@ -12,10 +12,65 @@ class pinViewController: UIViewController, MKMapViewDelegate{
     
     
     @IBOutlet weak var linkText: UITextField!
-    
+
+    let loginController = LoginViewController()
+    var email = UITextField()
+    var password = UITextField()
     
     @IBAction func submit(sender: UIButton) {
-        performSegueWithIdentifier("mapView", sender: self)
+        print(email.text)
+        print(password.text)
+        getUserID(email, password: password){ success, error in
+            if(success){
+                getUserData(userID){ success, error in
+                    if(success){
+                        let locationData: [String: AnyObject] = [
+                            uniqueKey : userID,
+                            firstName: firstName,
+                            lastName: lastName,
+                            mapString: mapString,
+                            mediaURL: mediaURL,
+                            latitude: latitude,
+                            longitude: longitude
+                        ]
+                        postLocationData(locationData){ success, error in
+                            if(success){
+                                self.performSegueWithIdentifier("mapView", sender: self)
+                            }
+                            else{
+                                let alert = UIAlertController(title: "Error", message: error, preferredStyle: UIAlertControllerStyle.Alert)
+                                let dismissAction = UIAlertAction(title: "OK", style: .Default) { (action) in }
+                                alert.addAction(dismissAction)
+                    
+                                dispatch_async(dispatch_get_main_queue()) {
+                                    self.presentViewController(alert, animated: true, completion: nil)
+                                }
+                            }
+                        
+                        }
+                    }
+                    else{
+                        let alert = UIAlertController(title: "Error", message: error, preferredStyle: UIAlertControllerStyle.Alert)
+                        let dismissAction = UIAlertAction(title: "OK", style: .Default) { (action) in }
+                        alert.addAction(dismissAction)
+                        
+                        dispatch_async(dispatch_get_main_queue()) {
+                            self.presentViewController(alert, animated: true, completion: nil)
+                        }
+                    }
+        
+                }
+            }
+            else{
+                let alert = UIAlertController(title: "Error", message: error, preferredStyle: UIAlertControllerStyle.Alert)
+                let dismissAction = UIAlertAction(title: "OK", style: .Default) { (action) in }
+                alert.addAction(dismissAction)
+                
+                dispatch_async(dispatch_get_main_queue()) {
+                    self.presentViewController(alert, animated: true, completion: nil)
+                }
+            }
+        }
         
     }
     
@@ -38,6 +93,7 @@ class pinViewController: UIViewController, MKMapViewDelegate{
     
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
         view.addGestureRecognizer(tap)

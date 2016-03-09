@@ -19,10 +19,6 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     @IBOutlet weak var Email: UITextField!
     @IBOutlet weak var Password: UITextField!
     
-    override func viewWillDisappear(animated: Bool) {
-        performSegueWithIdentifier("pinView", sender: self)
-        
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -146,16 +142,34 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         }
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
-        if (segue.identifier == "pinView") {
-            let detailVC = pinViewController()
-            detailVC.email = Email
-            detailVC.password = Password
+    
+    func getUserID(completionHandler: (success: Bool, error: String?) -> Void) {
+        
+        let request = NSMutableURLRequest(URL: NSURL(string: "https://www.udacity.com/api/session")!)
+        request.HTTPMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.HTTPBody = "{\"udacity\": {\"username\": \"\(Email.text)\", \"password\": \"\(Password.text)\"}}".dataUsingEncoding(NSUTF8StringEncoding)
+        let session = NSURLSession.sharedSession()
+        let task = session.dataTaskWithRequest(request) { data, response, error in
+            if error == nil {
+                let newData = data!.subdataWithRange(NSMakeRange(5, data!.length - 5)) /* subset response data! */
+                let Dict = try! NSJSONSerialization.JSONObjectWithData(newData, options: .AllowFragments) as! NSDictionary
+                print(Dict)
+                userID = Dict["account"]!["key"] as! String!
+                completionHandler(success: true, error: nil)
+            }
+            else{
+                completionHandler(success: false, error: "Network error!")
+            }
             
+            
+            //println(NSString(data: newData, encoding: NSUTF8StringEncoding))
         }
+        task.resume()
+        
+        
     }
-    
-    
     
 }
 

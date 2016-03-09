@@ -13,14 +13,11 @@ class pinViewController: UIViewController, MKMapViewDelegate{
     
     @IBOutlet weak var linkText: UITextField!
 
-    let loginController = LoginViewController()
-    var email = UITextField()
-    var password = UITextField()
+    var loginController = LoginViewController?()
+    
     
     @IBAction func submit(sender: UIButton) {
-        print(email.text)
-        print(password.text)
-        getUserID(email, password: password){ success, error in
+        loginController!.getUserID(){ success, error in
             if(success){
                 getUserData(userID){ success, error in
                     if(success){

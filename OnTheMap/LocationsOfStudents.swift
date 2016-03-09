@@ -81,34 +81,7 @@ func postLocationData(data: [String: AnyObject], completionHandler: (success: Bo
     
 }
 
-func getUserID(email: UITextField, password: UITextField, completionHandler: (success: Bool, error: String?) -> Void) {
-    
-    
-    let request = NSMutableURLRequest(URL: NSURL(string: "https://www.udacity.com/api/session")!)
-    request.HTTPMethod = "POST"
-    request.addValue("application/json", forHTTPHeaderField: "Accept")
-    request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-    request.HTTPBody = "{\"udacity\": {\"username\": \"\(email.text)\", \"password\": \"\(password.text)\"}}".dataUsingEncoding(NSUTF8StringEncoding)
-    let session = NSURLSession.sharedSession()
-    let task = session.dataTaskWithRequest(request) { data, response, error in
-        if error == nil { 
-            let newData = data!.subdataWithRange(NSMakeRange(5, data!.length - 5)) /* subset response data! */
-            let Dict = try! NSJSONSerialization.JSONObjectWithData(newData, options: .AllowFragments) as! NSDictionary
-            print(Dict)
-            userID = Dict["account"]!["key"] as! String!
-            completionHandler(success: true, error: nil)
-        }
-        else{
-            completionHandler(success: false, error: "Network error!")
-        }
-        
-        
-        //println(NSString(data: newData, encoding: NSUTF8StringEncoding))
-    }
-    task.resume()
-    
-    
-}
+
 
 func getUserData(userID: String, completionHandler: (success: Bool, errorMessage: String?) -> Void ) {
     let id = userID

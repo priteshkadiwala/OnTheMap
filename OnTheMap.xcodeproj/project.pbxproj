@@ -23,6 +23,7 @@
 		2CF2BD331C33917E00397FA4 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CF2BD301C33917E00397FA4 /* FBSDKCoreKit.framework */; };
 		2CF2BD341C33917E00397FA4 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CF2BD311C33917E00397FA4 /* FBSDKLoginKit.framework */; };
 		2CF2BD351C33917E00397FA4 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CF2BD321C33917E00397FA4 /* FBSDKShareKit.framework */; };
+		2CFEA8C91C90A9D7001ACC18 /* nameStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CFEA8C81C90A9D7001ACC18 /* nameStruct.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +66,7 @@
 		2CF2BD301C33917E00397FA4 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = "FacebookSDKs-iOS-20151111/FBSDKCoreKit.framework"; sourceTree = "<group>"; };
 		2CF2BD311C33917E00397FA4 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = "FacebookSDKs-iOS-20151111/FBSDKLoginKit.framework"; sourceTree = "<group>"; };
 		2CF2BD321C33917E00397FA4 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = "FacebookSDKs-iOS-20151111/FBSDKShareKit.framework"; sourceTree = "<group>"; };
+		2CFEA8C81C90A9D7001ACC18 /* nameStruct.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = nameStruct.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,6 +130,7 @@
 				2C5091281BE826430066AEF2 /* Main.storyboard */,
 				2C5AE8EA1BF9554600FA563C /* MapViewController.swift */,
 				2C9C3E941C52D9DD0072A689 /* parseAPI.swift */,
+				2CFEA8C81C90A9D7001ACC18 /* nameStruct.swift */,
 				2CDECB281C7E003C00626D89 /* LocationsOfStudents.swift */,
 				2C50912B1BE826430066AEF2 /* Assets.xcassets */,
 				2C50912D1BE826430066AEF2 /* LaunchScreen.storyboard */,
@@ -293,6 +296,7 @@
 				2C5091251BE826430066AEF2 /* AppDelegate.swift in Sources */,
 				2C40828A1C125E2D005A2DD7 /* pinViewController.swift in Sources */,
 				2C4082881C125CB9005A2DD7 /* placeViewController.swift in Sources */,
+				2CFEA8C91C90A9D7001ACC18 /* nameStruct.swift in Sources */,
 				2CDECB291C7E003C00626D89 /* LocationsOfStudents.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

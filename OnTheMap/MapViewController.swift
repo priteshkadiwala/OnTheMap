@@ -45,7 +45,6 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIActionSheetDeleg
     var objectId : String = ""
     var uniqueKey : String = ""
     var updatedAt : String = ""
-
     
     // The map. See the setup in the Storyboard file. Note particularly that the view controller
     // is set up as the map view's delegate.
@@ -56,7 +55,6 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIActionSheetDeleg
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         // The "locations" array is an array of dictionary objects that are similar to the JSON
         // data that you can download from parse.
        

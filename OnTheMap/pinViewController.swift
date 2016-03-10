@@ -14,15 +14,16 @@ class pinViewController: UIViewController, MKMapViewDelegate{
     @IBOutlet weak var linkText: UITextField!
 
     var loginController = LoginViewController?()
-    
+    var user = userData?()
     
     @IBAction func submit(sender: UIButton) {
-        loginController!.getUserID(){ success, error in
+        loginController?.checkLogin(){ success, error in
             if(success){
-                getUserData(userID){ success, error in
+                print("Hi")
+                getUserData((self.user!.userID)){ success, error in
                     if(success){
                         let locationData: [String: AnyObject] = [
-                            uniqueKey : userID,
+                            uniqueKey : self.user!.userID,
                             firstName: firstName,
                             lastName: lastName,
                             mapString: mapString,
@@ -55,20 +56,21 @@ class pinViewController: UIViewController, MKMapViewDelegate{
                             self.presentViewController(alert, animated: true, completion: nil)
                         }
                     }
+                }
         
-                }
+            } else{
+                dispatch_async(dispatch_get_main_queue(), {
+                    let alertController = UIAlertController(title: "Error", message: error, preferredStyle: .Alert)
+                    let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
+                    }
+                    alertController.addAction(OKAction)
+                    
+                    self.presentViewController(alertController, animated: true) {
+                    }
+                })
             }
-            else{
-                let alert = UIAlertController(title: "Error", message: error, preferredStyle: UIAlertControllerStyle.Alert)
-                let dismissAction = UIAlertAction(title: "OK", style: .Default) { (action) in }
-                alert.addAction(dismissAction)
-                
-                dispatch_async(dispatch_get_main_queue()) {
-                    self.presentViewController(alert, animated: true, completion: nil)
-                }
-            }
+        
         }
-        
     }
     
     @IBOutlet weak var mapView: MKMapView!

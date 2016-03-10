@@ -549,13 +549,12 @@
                         <outlet property="Email" destination="2qB-Qf-r23" id="kJa-CL-5nS"/>
                         <outlet property="Password" destination="ZSu-Mw-TB8" id="46a-LW-yic"/>
                         <outlet property="loginButton" destination="GAU-UL-9zu" id="mYD-9a-eU6"/>
-                        <segue destination="2aJ-DR-Wh1" kind="presentation" identifier="tabController" id="4Q8-nD-k8S"/>
-                        <segue destination="A2p-bG-Sh5" kind="show" identifier="pinView" id="tcw-Ie-czE"/>
+                        <segue destination="2aJ-DR-Wh1" kind="presentation" identifier="tabController" id="6wa-DR-RD6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="379.5" y="306"/>
+            <point key="canvasLocation" x="381" y="306"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="Pol-6k-35D">
@@ -581,7 +580,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="aJv-WP-GJS"/>
-        <segue reference="4Q8-nD-k8S"/>
-        <segue reference="tcw-Ie-czE"/>
+        <segue reference="6wa-DR-RD6"/>
     </inferredMetricsTieBreakers>
 </document>

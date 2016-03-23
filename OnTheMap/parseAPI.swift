@@ -8,11 +8,6 @@
 
 import Foundation
 
-
-
-
-
-
 struct parseApi{
     
     var createdAt : String

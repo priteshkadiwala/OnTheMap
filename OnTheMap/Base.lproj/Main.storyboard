@@ -80,12 +80,19 @@
                         <barButtonItem key="leftBarButtonItem" tag="1" title="Pin" id="QhX-N9-GTk">
                             <connections>
                                 <action selector="Pin:" destination="8MM-Dk-Xg6" id="51B-53-rAx"/>
-                                <segue destination="PpM-Q3-efA" kind="show" id="mE6-8d-XRS"/>
+                                <segue destination="PpM-Q3-efA" kind="popoverPresentation" popoverAnchorBarButtonItem="QhX-N9-GTk" id="mE6-8d-XRS">
+                                    <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                </segue>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="Az8-Ut-XDJ"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="Az8-Ut-XDJ">
+                            <connections>
+                                <action selector="reloadData:" destination="8MM-Dk-Xg6" id="ENj-vO-tJl"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="Pin" destination="QhX-N9-GTk" id="n24-mP-9nG"/>
                         <outlet property="mapView" destination="lYX-G9-3ec" id="l7a-fa-keO"/>
                     </connections>
                 </viewController>
@@ -267,7 +274,6 @@
                                 <state key="normal" title="Submit"/>
                                 <connections>
                                     <action selector="submit:" destination="A2p-bG-Sh5" eventType="touchUpInside" id="qK5-HJ-x0V"/>
-                                    <segue destination="2aJ-DR-Wh1" kind="show" identifier="mapView" id="LJB-Ua-TAZ"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -379,7 +385,9 @@
                     <navigationItem key="navigationItem" title="On The Map" id="roh-fL-gFs">
                         <barButtonItem key="leftBarButtonItem" title="Pin" id="7Td-3N-9nd">
                             <connections>
-                                <segue destination="PpM-Q3-efA" kind="show" id="aJv-WP-GJS"/>
+                                <segue destination="PpM-Q3-efA" kind="popoverPresentation" popoverAnchorBarButtonItem="7Td-3N-9nd" id="aJv-WP-GJS">
+                                    <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                </segue>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="69m-jf-NDU"/>
@@ -579,7 +587,6 @@
         <image name="Main image" width="246" height="246"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="aJv-WP-GJS"/>
-        <segue reference="6wa-DR-RD6"/>
+        <segue reference="mE6-8d-XRS"/>
     </inferredMetricsTieBreakers>
 </document>

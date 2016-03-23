@@ -20,7 +20,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     @IBOutlet weak var Email: UITextField!
     @IBOutlet weak var Password: UITextField!
     
-    var userID: String?
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,7 +65,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     }
     
     @IBAction func Login(sender: UIButton) {
-        checkLogin(){ success, error in
+        UdacityAPI.sharedInstance.checkLogin(Email.text!, password: Password.text!){ success, error in
             if(success){
                 dispatch_async(dispatch_get_main_queue(), {
                     self.performSegueWithIdentifier("tabController", sender: self)
@@ -88,34 +88,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         
     }
     
-    func checkLogin(completionHandler: (success: Bool, error: String?) -> Void){
-        let request = NSMutableURLRequest(URL: NSURL(string: "https://www.udacity.com/api/session")!)
-        request.HTTPMethod = "POST"
-        request.addValue("application/json", forHTTPHeaderField: "Accept")
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.HTTPBody = "{\"udacity\": {\"username\": \"\(Email.text!)\", \"password\": \"\(Password.text!)\"}}".dataUsingEncoding(NSUTF8StringEncoding)
-        
-        let session = NSURLSession.sharedSession()
-        let task = session.dataTaskWithRequest(request) { data, response, error in
-            if error == nil { // Handle error…
-                let newData = data!.subdataWithRange(NSMakeRange(5, data!.length - 5))
-                let Dict = try! NSJSONSerialization.JSONObjectWithData(newData, options: .AllowFragments) as! NSDictionary
-                if(Dict["error"] != nil){
-                    completionHandler(success: false, error: "Wrong Credentials")
-                    
-                } else{
-                    self.userID = userData.getID(Dict["account"]!["key"] as! String)
-                    let sessionId = Dict["account"]!["registered"] as! Bool!
-                    if(sessionId == true){
-                        completionHandler(success: true, error: nil)
-                    }
-                }
-                
-            }
-        }
-        task.resume()
-
-    }
+    
 }
 
 

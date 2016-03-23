@@ -10,70 +10,23 @@ import UIKit
 
 class pinViewController: UIViewController, MKMapViewDelegate{
     
+    var uniqueKey = String()
+    var firstName = String()
+    var lastName = String()
+    var mapString = String()
+    var mediaURL = String()
+    var latitude = Double()
+    var longitude = Double()
+    var userID = String()
     
-    @IBOutlet weak var linkText: UITextField!
+    static let sharedInstance = pinViewController()
 
-    var loginController = LoginViewController?()
-    var user = userData?()
+    @IBOutlet weak var linkText: UITextField!
     
-    @IBAction func submit(sender: UIButton) {
-        loginController?.checkLogin(){ success, error in
-            if(success){
-                print("Hi")
-                getUserData((self.user!.userID)){ success, error in
-                    if(success){
-                        let locationData: [String: AnyObject] = [
-                            uniqueKey : self.user!.userID,
-                            firstName: firstName,
-                            lastName: lastName,
-                            mapString: mapString,
-                            mediaURL: mediaURL,
-                            latitude: latitude,
-                            longitude: longitude
-                        ]
-                        postLocationData(locationData){ success, error in
-                            if(success){
-                                self.performSegueWithIdentifier("mapView", sender: self)
-                            }
-                            else{
-                                let alert = UIAlertController(title: "Error", message: error, preferredStyle: UIAlertControllerStyle.Alert)
-                                let dismissAction = UIAlertAction(title: "OK", style: .Default) { (action) in }
-                                alert.addAction(dismissAction)
-                    
-                                dispatch_async(dispatch_get_main_queue()) {
-                                    self.presentViewController(alert, animated: true, completion: nil)
-                                }
-                            }
-                        
-                        }
-                    }
-                    else{
-                        let alert = UIAlertController(title: "Error", message: error, preferredStyle: UIAlertControllerStyle.Alert)
-                        let dismissAction = UIAlertAction(title: "OK", style: .Default) { (action) in }
-                        alert.addAction(dismissAction)
-                        
-                        dispatch_async(dispatch_get_main_queue()) {
-                            self.presentViewController(alert, animated: true, completion: nil)
-                        }
-                    }
-                }
-        
-            } else{
-                dispatch_async(dispatch_get_main_queue(), {
-                    let alertController = UIAlertController(title: "Error", message: error, preferredStyle: .Alert)
-                    let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
-                    }
-                    alertController.addAction(OKAction)
-                    
-                    self.presentViewController(alertController, animated: true) {
-                    }
-                })
-            }
-        
-        }
-    }
+    
     
     @IBOutlet weak var mapView: MKMapView!
+    
     var annotation:MKAnnotation!
     var localSearchRequest:MKLocalSearchRequest!
     var localSearch:MKLocalSearch!
@@ -84,11 +37,7 @@ class pinViewController: UIViewController, MKMapViewDelegate{
     
     var text = ""
 
-    @IBAction func cancel(sender: AnyObject) {
-        let detailController = self.storyboard!.instantiateViewControllerWithIdentifier("UITabBarController") as! UITabBarController//to access the picture in a detailed view
-        self.presentViewController(detailController, animated: true, completion: nil)
-        
-    }
+    
     
     
     override func viewDidLoad() {
@@ -108,14 +57,13 @@ class pinViewController: UIViewController, MKMapViewDelegate{
                 self.presentViewController(alertController, animated: true, completion: nil)
                 return
             }
-            //3
+            
             self.pointAnnotation = MKPointAnnotation()
             self.pointAnnotation.title = self.text
             self.pointAnnotation.coordinate = CLLocationCoordinate2D(latitude: localSearchResponse!.boundingRegion.center.latitude, longitude:     localSearchResponse!.boundingRegion.center.longitude)
             
             
-            
-            self.pinAnnotationView = MKPinAnnotationView(annotation: self.pointAnnotation, reuseIdentifier: nil)
+                        self.pinAnnotationView = MKPinAnnotationView(annotation: self.pointAnnotation, reuseIdentifier: nil)
             self.mapView.centerCoordinate = self.pointAnnotation.coordinate
             self.mapView.addAnnotation(self.pinAnnotationView.annotation!)
         }
@@ -126,6 +74,34 @@ class pinViewController: UIViewController, MKMapViewDelegate{
         
         
     }
+    
+    @IBAction func cancel(sender: AnyObject) {
+        let detailController = self.storyboard!.instantiateViewControllerWithIdentifier("UITabBarController") as! UITabBarController//to access the picture in a detailed view
+        self.presentViewController(detailController, animated: true, completion: nil)
+        
+    }
+    
+    @IBAction func submit(sender: UIButton) {
+        
+        let post = String(format: "uniqueKey=%@&firstName=%@&lastName=%@&mapString=%@&mediaURL=%@&latitude=%@&longitude=%@",UdacityAPI.sharedInstance.userID!,(UdacityAPI.sharedInstance.name?.firstName)!,(UdacityAPI.sharedInstance.name?.lastName)!,text,linkText.text!,self.pointAnnotation.coordinate.latitude, self.pointAnnotation.coordinate.latitude)
+        ParseClient.sharedInstance.postLocationData(post){ success, error in
+            if(success){
+                print("did post")
+                self.dismissViewControllerAnimated(true, completion: nil)
+            }
+            else{
+                let alert = UIAlertController(title: "Error", message: error, preferredStyle: UIAlertControllerStyle.Alert)
+                let dismissAction = UIAlertAction(title: "OK", style: .Default) { (action) in }
+                alert.addAction(dismissAction)
+                
+                dispatch_async(dispatch_get_main_queue()) {
+                    self.presentViewController(alert, animated: true, completion: nil)
+                }
+            }
+        }
+        
+    }
+    
     func dismissKeyboard() {
         //Causes the view (or one of its embedded text fields) to resign the first responder status.
         view.endEditing(true)

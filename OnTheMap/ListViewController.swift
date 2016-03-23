@@ -20,9 +20,9 @@ class ListViewController: UITableViewController{
         super.viewDidLoad()
         
         
-     
         
-        count = Api.count
+        
+        count = ParseClient.sharedInstance.Api.count
         tableView.reloadData()
     }
     
@@ -34,17 +34,23 @@ class ListViewController: UITableViewController{
         
         let cell = tableView.dequeueReusableCellWithIdentifier("ompCell")! as UITableViewCell
         
-
+        let showLocation = ParseClient.sharedInstance.Api[indexPath.row]
         
-        for dictionary in Api{
-            let first = dictionary.firstName 
-            let last = dictionary.lastName 
-            
-            cell.textLabel?.text = "\(first) \(last)"
-            return cell
-        }
-        
+        cell.textLabel?.text = "\(showLocation.firstName) \(showLocation.lastName)"
+        cell.detailTextLabel?.text = showLocation.mediaURL
+    
         return cell
+    }
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let showURL = ParseClient.sharedInstance.Api[indexPath.row]
+        
+        let app = UIApplication.sharedApplication()
+        if let url = NSURL(string: showURL.mediaURL) {
+            app.openURL( url )
+        } else {
+            print("ERROR: Invalid url")
+        }
     }
     
 }

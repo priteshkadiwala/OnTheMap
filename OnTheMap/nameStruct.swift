@@ -10,16 +10,9 @@ import Foundation
 
 
 
-struct userData{
-    var userID: String
-    init(userID: String){
-        self.userID = userID
-    }
-    static func getID(id: String) -> String {
-        var setID = userData?()?.userID
-        setID = id
-        
-        return setID!
-    }
+struct nameStruct{
+    
+    var firstName = ""
+    var lastName = ""
     
 }

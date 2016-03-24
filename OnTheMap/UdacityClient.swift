@@ -95,4 +95,31 @@ class UdacityAPI: NSObject {
         
     }
     
+    func logout(completionHandler: (success: Bool, errorMessage: String?) -> Void){
+        let request = NSMutableURLRequest(URL: NSURL(string: "https://www.udacity.com/api/session")!)
+        request.HTTPMethod = "DELETE"
+        var xsrfCookie: NSHTTPCookie? = nil
+        let sharedCookieStorage = NSHTTPCookieStorage.sharedHTTPCookieStorage()
+        for cookie in sharedCookieStorage.cookies! {
+            if cookie.name == "XSRF-TOKEN" { xsrfCookie = cookie }
+        }
+        if let xsrfCookie = xsrfCookie {
+            request.setValue(xsrfCookie.value, forHTTPHeaderField: "X-XSRF-TOKEN")
+        }
+        let session = NSURLSession.sharedSession()
+        let task = session.dataTaskWithRequest(request) { data, response, error in
+            
+            //let newData = data!.subdataWithRange(NSMakeRange(5, data!.length - 5)) /* subset response data! */
+            //print(NSString(data: newData, encoding: NSUTF8StringEncoding))
+            if error == nil {
+                self.userID = nil
+                completionHandler(success: true, errorMessage: nil)
+            } else{
+                completionHandler(success: true, errorMessage: "Network Error.")
+            }
+            
+        }
+        task.resume()
+    }
+    
 }

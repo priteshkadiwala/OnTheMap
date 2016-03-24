@@ -18,12 +18,11 @@ class pinViewController: UIViewController, MKMapViewDelegate{
     var latitude = Double()
     var longitude = Double()
     var userID = String()
-    
-    static let sharedInstance = pinViewController()
 
     @IBOutlet weak var linkText: UITextField!
+    @IBOutlet weak var acitivityController: UIActivityIndicatorView!
     
-    
+    var text = ""
     
     @IBOutlet weak var mapView: MKMapView!
     
@@ -35,7 +34,7 @@ class pinViewController: UIViewController, MKMapViewDelegate{
     var pointAnnotation:MKPointAnnotation!
     var pinAnnotationView:MKPinAnnotationView!
     
-    var text = ""
+    
 
     
     
@@ -43,6 +42,7 @@ class pinViewController: UIViewController, MKMapViewDelegate{
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        self.acitivityController.startAnimating()
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
         view.addGestureRecognizer(tap)
         
@@ -50,7 +50,7 @@ class pinViewController: UIViewController, MKMapViewDelegate{
         localSearchRequest.naturalLanguageQuery = text
         localSearch = MKLocalSearch(request: localSearchRequest)
         localSearch.startWithCompletionHandler { (localSearchResponse, error) -> Void in
-            
+        
             if localSearchResponse == nil{
                 let alertController = UIAlertController(title: nil, message: "Place Not Found", preferredStyle: UIAlertControllerStyle.Alert)
                 alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default, handler: nil))
@@ -63,9 +63,12 @@ class pinViewController: UIViewController, MKMapViewDelegate{
             self.pointAnnotation.coordinate = CLLocationCoordinate2D(latitude: localSearchResponse!.boundingRegion.center.latitude, longitude:     localSearchResponse!.boundingRegion.center.longitude)
             
             
-                        self.pinAnnotationView = MKPinAnnotationView(annotation: self.pointAnnotation, reuseIdentifier: nil)
+            self.pinAnnotationView = MKPinAnnotationView(annotation: self.pointAnnotation, reuseIdentifier: nil)
             self.mapView.centerCoordinate = self.pointAnnotation.coordinate
             self.mapView.addAnnotation(self.pinAnnotationView.annotation!)
+            self.acitivityController.stopAnimating()
+            self.acitivityController.hidden = true
+            
         }
     
         
@@ -83,8 +86,9 @@ class pinViewController: UIViewController, MKMapViewDelegate{
     
     @IBAction func submit(sender: UIButton) {
         
-        let post = String(format: "uniqueKey=%@&firstName=%@&lastName=%@&mapString=%@&mediaURL=%@&latitude=%@&longitude=%@",UdacityAPI.sharedInstance.userID!,(UdacityAPI.sharedInstance.name?.firstName)!,(UdacityAPI.sharedInstance.name?.lastName)!,text,linkText.text!,self.pointAnnotation.coordinate.latitude, self.pointAnnotation.coordinate.latitude)
-        ParseClient.sharedInstance.postLocationData(post){ success, error in
+        let postData = "{\"uniqueKey\": \"\(UdacityAPI.sharedInstance.userID!)\", \"firstName\": \"\((UdacityAPI.sharedInstance.name?.firstName)!)\", \"lastName\": \"\((UdacityAPI.sharedInstance.name?.lastName)!)\",\"mapString\": \"\(text)\", \"mediaURL\": \"\(linkText.text!)\",\"latitude\": \(self.pointAnnotation.coordinate.latitude), \"longitude\": \(self.pointAnnotation.coordinate.latitude)}"
+        
+        ParseClient.sharedInstance.postLocationData(postData){ success, error in
             if(success){
                 print("did post")
                 self.dismissViewControllerAnimated(true, completion: nil)

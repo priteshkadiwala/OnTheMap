@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import FBSDKCoreKit
+import FBSDKLoginKit
 import UIKit
 
 class ListViewController: UITableViewController{
@@ -18,12 +20,55 @@ class ListViewController: UITableViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
-        
-        
         count = ParseClient.sharedInstance.Api.count
         tableView.reloadData()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        ParseClient.sharedInstance.getLocationData(){ success, error in
+            if (success){
+                dispatch_async(dispatch_get_main_queue()) {
+                    self.tableView.reloadData()
+                }
+                
+                
+            } else{
+                dispatch_async(dispatch_get_main_queue(), {
+                    let alertController = UIAlertController(title: "Invalid Login", message: error, preferredStyle: .Alert)
+                    let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
+                    }
+                    alertController.addAction(OKAction)
+                    
+                    self.presentViewController(alertController, animated: true) {
+                    }
+                })
+            }
+            
+        }
+    }
+    
+    @IBAction func logout(sender: AnyObject) {
+        UdacityAPI.sharedInstance.logout(){ success, error in
+            if(success){
+                
+                dispatch_async(dispatch_get_main_queue()) {
+                    FBSDKLoginManager().logOut()
+                    let loginController = self.storyboard?.instantiateViewControllerWithIdentifier("LoginViewController") as! LoginViewController
+                    self.presentViewController(loginController, animated: true, completion: nil)
+                }
+            } else {
+                dispatch_async(dispatch_get_main_queue(), {
+                    let alertController = UIAlertController(title: "Invalid Login", message: error, preferredStyle: .Alert)
+                    let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
+                    }
+                    alertController.addAction(OKAction)
+                    
+                    self.presentViewController(alertController, animated: true) {
+                    }
+                })
+            }
+            
+        }
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -44,7 +89,7 @@ class ListViewController: UITableViewController{
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let showURL = ParseClient.sharedInstance.Api[indexPath.row]
-        
+        print(showURL.mediaURL)
         let app = UIApplication.sharedApplication()
         if let url = NSURL(string: showURL.mediaURL) {
             app.openURL( url )

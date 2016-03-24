@@ -11,15 +11,20 @@ import Foundation
 class ParseClient: NSObject {
     
     static let sharedInstance = ParseClient()
-    
     var Api = [parseApi]()
+    
+    override init() {
+        Api = [parseApi]()
+        super.init()
+    }
+    
     let applicationId = "QrX47CA9cyuGewLdsL7o5Eb8iug6Em8ye0dnAbIr"
     let restAPI = "QuWThTdiRmTux3YaDseUSEpUKo7aBYM737yKd4gY"
     
     
     func getLocationData(completionHandler: (success: Bool, error: String?) -> Void) {
         
-        let request = NSMutableURLRequest(URL: NSURL(string: "https://api.parse.com/1/classes/StudentLocation?limit=100&order=-createdAt")!)
+        let request = NSMutableURLRequest(URL: NSURL(string: "https://api.parse.com/1/classes/StudentLocation?limit=100&order=-updatedAt")!)
         request.addValue(applicationId, forHTTPHeaderField: "X-Parse-Application-Id")
         request.addValue(restAPI, forHTTPHeaderField: "X-Parse-REST-API-Key")
         request.HTTPMethod = "GET"
@@ -56,7 +61,7 @@ class ParseClient: NSObject {
         
         
         let url:NSURL = NSURL(string: "https://api.parse.com/1/classes/StudentLocation")!
-        let postData:NSData = data.dataUsingEncoding(NSASCIIStringEncoding)!
+        let postData:NSData = data.dataUsingEncoding(NSUTF8StringEncoding)!
         let request = NSMutableURLRequest(URL: url)
         request.HTTPMethod = "POST"
         request.addValue(applicationId, forHTTPHeaderField: "X-Parse-Application-Id")

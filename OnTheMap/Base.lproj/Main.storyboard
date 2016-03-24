@@ -42,10 +42,15 @@
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="lYX-G9-3ec">
                                 <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                             </mapView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Y75-H3-frM">
+                                <rect key="frame" x="-10" y="-10" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="lYX-G9-3ec" firstAttribute="centerY" secondItem="QxQ-fm-lUC" secondAttribute="centerY" id="9KW-EV-rDv"/>
+                            <constraint firstItem="Y75-H3-frM" firstAttribute="centerX" secondItem="QxQ-fm-lUC" secondAttribute="centerX" id="GSK-6h-6Ix"/>
+                            <constraint firstItem="Y75-H3-frM" firstAttribute="centerY" secondItem="QxQ-fm-lUC" secondAttribute="centerY" id="HcN-PZ-d5j"/>
                             <constraint firstItem="lYX-G9-3ec" firstAttribute="leading" secondItem="QxQ-fm-lUC" secondAttribute="leadingMargin" constant="-20" id="Igk-WS-VOr"/>
                             <constraint firstAttribute="trailingMargin" secondItem="lYX-G9-3ec" secondAttribute="trailing" constant="-20" id="UnS-o6-82W"/>
                             <constraint firstItem="z00-Dh-N8x" firstAttribute="top" secondItem="lYX-G9-3ec" secondAttribute="bottom" id="i7Y-yZ-pTN"/>
@@ -54,9 +59,12 @@
                         <variation key="default">
                             <mask key="subviews">
                                 <exclude reference="lYX-G9-3ec"/>
+                                <exclude reference="Y75-H3-frM"/>
                             </mask>
                             <mask key="constraints">
                                 <exclude reference="i7Y-yZ-pTN"/>
+                                <exclude reference="GSK-6h-6Ix"/>
+                                <exclude reference="HcN-PZ-d5j"/>
                                 <exclude reference="9KW-EV-rDv"/>
                                 <exclude reference="Igk-WS-VOr"/>
                                 <exclude reference="UnS-o6-82W"/>
@@ -66,9 +74,12 @@
                         <variation key="widthClass=compact">
                             <mask key="subviews">
                                 <include reference="lYX-G9-3ec"/>
+                                <include reference="Y75-H3-frM"/>
                             </mask>
                             <mask key="constraints">
                                 <include reference="i7Y-yZ-pTN"/>
+                                <include reference="GSK-6h-6Ix"/>
+                                <include reference="HcN-PZ-d5j"/>
                                 <include reference="9KW-EV-rDv"/>
                                 <include reference="Igk-WS-VOr"/>
                                 <include reference="UnS-o6-82W"/>
@@ -77,7 +88,12 @@
                         </variation>
                     </view>
                     <navigationItem key="navigationItem" title="On The Map" id="7Hx-9K-gwI">
-                        <barButtonItem key="leftBarButtonItem" tag="1" title="Pin" id="QhX-N9-GTk">
+                        <barButtonItem key="leftBarButtonItem" title="Logout" id="Az8-Ut-XDJ">
+                            <connections>
+                                <action selector="logoutUdacity:" destination="8MM-Dk-Xg6" id="Alj-1r-wTp"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" tag="1" title="Pin" id="QhX-N9-GTk">
                             <connections>
                                 <action selector="Pin:" destination="8MM-Dk-Xg6" id="51B-53-rAx"/>
                                 <segue destination="PpM-Q3-efA" kind="popoverPresentation" popoverAnchorBarButtonItem="QhX-N9-GTk" id="mE6-8d-XRS">
@@ -85,14 +101,10 @@
                                 </segue>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="Az8-Ut-XDJ">
-                            <connections>
-                                <action selector="reloadData:" destination="8MM-Dk-Xg6" id="ENj-vO-tJl"/>
-                            </connections>
-                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="Pin" destination="QhX-N9-GTk" id="n24-mP-9nG"/>
+                        <outlet property="activityController" destination="Y75-H3-frM" id="fpY-Kd-LRY"/>
                         <outlet property="mapView" destination="lYX-G9-3ec" id="l7a-fa-keO"/>
                     </connections>
                 </viewController>
@@ -276,6 +288,9 @@
                                     <action selector="submit:" destination="A2p-bG-Sh5" eventType="touchUpInside" id="qK5-HJ-x0V"/>
                                 </connections>
                             </button>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="Y0r-eL-qCF">
+                                <rect key="frame" x="-10" y="-10" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" red="0.24817124809999999" green="0.2291015907" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -288,6 +303,7 @@
                             </constraint>
                             <constraint firstAttribute="trailingMargin" secondItem="Rjm-WL-Vb6" secondAttribute="trailing" constant="114" id="UXE-Gl-xJU"/>
                             <constraint firstItem="6sy-QO-7tH" firstAttribute="top" secondItem="Rjm-WL-Vb6" secondAttribute="bottom" constant="32" id="Zeb-qW-7BI"/>
+                            <constraint firstItem="Y0r-eL-qCF" firstAttribute="leading" secondItem="f9x-72-pq1" secondAttribute="leadingMargin" constant="170" id="aPz-dN-Wqz"/>
                             <constraint firstAttribute="trailingMargin" secondItem="t9V-By-Yqs" secondAttribute="trailing" constant="-20" id="ePL-8c-eqz"/>
                             <constraint firstItem="t9V-By-Yqs" firstAttribute="leading" secondItem="f9x-72-pq1" secondAttribute="leadingMargin" constant="-20" id="ea8-jW-SZx"/>
                             <constraint firstItem="6sy-QO-7tH" firstAttribute="top" secondItem="t9V-By-Yqs" secondAttribute="bottom" constant="374" id="fGX-JF-Gm5">
@@ -296,15 +312,22 @@
                             <constraint firstItem="4Ni-YY-9Gl" firstAttribute="leading" secondItem="f9x-72-pq1" secondAttribute="leadingMargin" constant="-20" id="gpe-fG-Zjy"/>
                             <constraint firstItem="Rjm-WL-Vb6" firstAttribute="top" secondItem="vbh-dp-u6A" secondAttribute="bottom" constant="421" id="kDw-Ne-vXV"/>
                             <constraint firstItem="6sy-QO-7tH" firstAttribute="top" secondItem="4Ni-YY-9Gl" secondAttribute="bottom" id="l5j-PI-XZN"/>
+                            <constraint firstItem="Y0r-eL-qCF" firstAttribute="centerX" secondItem="f9x-72-pq1" secondAttribute="centerX" id="lQ1-Pq-cm9"/>
                             <constraint firstAttribute="trailingMargin" secondItem="4Ni-YY-9Gl" secondAttribute="trailing" constant="-20" id="nbC-H0-Mal"/>
+                            <constraint firstItem="6sy-QO-7tH" firstAttribute="top" secondItem="Y0r-eL-qCF" secondAttribute="bottom" constant="136" id="oID-lr-8TC"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Y0r-eL-qCF" secondAttribute="trailing" constant="170" id="wjB-gQ-WE7"/>
                         </constraints>
                         <variation key="default">
                             <mask key="subviews">
                                 <exclude reference="4Ni-YY-9Gl"/>
                                 <exclude reference="t9V-By-Yqs"/>
                                 <exclude reference="Rjm-WL-Vb6"/>
+                                <exclude reference="Y0r-eL-qCF"/>
                             </mask>
                             <mask key="constraints">
+                                <exclude reference="aPz-dN-Wqz"/>
+                                <exclude reference="lQ1-Pq-cm9"/>
+                                <exclude reference="wjB-gQ-WE7"/>
                                 <exclude reference="F6b-4C-rbF"/>
                                 <exclude reference="ePL-8c-eqz"/>
                                 <exclude reference="ea8-jW-SZx"/>
@@ -314,6 +337,7 @@
                                 <exclude reference="Zeb-qW-7BI"/>
                                 <exclude reference="fGX-JF-Gm5"/>
                                 <exclude reference="l5j-PI-XZN"/>
+                                <exclude reference="oID-lr-8TC"/>
                                 <exclude reference="UMn-of-P1Y"/>
                                 <exclude reference="gpe-fG-Zjy"/>
                                 <exclude reference="nbC-H0-Mal"/>
@@ -324,8 +348,12 @@
                                 <include reference="4Ni-YY-9Gl"/>
                                 <include reference="t9V-By-Yqs"/>
                                 <include reference="Rjm-WL-Vb6"/>
+                                <include reference="Y0r-eL-qCF"/>
                             </mask>
                             <mask key="constraints">
+                                <include reference="aPz-dN-Wqz"/>
+                                <include reference="lQ1-Pq-cm9"/>
+                                <include reference="wjB-gQ-WE7"/>
                                 <include reference="F6b-4C-rbF"/>
                                 <include reference="ePL-8c-eqz"/>
                                 <include reference="ea8-jW-SZx"/>
@@ -335,6 +363,7 @@
                                 <include reference="Zeb-qW-7BI"/>
                                 <include reference="fGX-JF-Gm5"/>
                                 <include reference="l5j-PI-XZN"/>
+                                <include reference="oID-lr-8TC"/>
                                 <include reference="UMn-of-P1Y"/>
                                 <include reference="gpe-fG-Zjy"/>
                                 <include reference="nbC-H0-Mal"/>
@@ -351,6 +380,7 @@
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="acitivityController" destination="Y0r-eL-qCF" id="5QY-SN-P4K"/>
                         <outlet property="linkText" destination="t9V-By-Yqs" id="7IT-e4-Yv4"/>
                         <outlet property="mapView" destination="4Ni-YY-9Gl" id="Kha-27-RYJ"/>
                     </connections>
@@ -383,14 +413,18 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="On The Map" id="roh-fL-gFs">
-                        <barButtonItem key="leftBarButtonItem" title="Pin" id="7Td-3N-9nd">
+                        <barButtonItem key="leftBarButtonItem" title="Logout" id="69m-jf-NDU">
+                            <connections>
+                                <action selector="logout:" destination="iTn-a1-oGS" id="31a-MM-ul1"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Pin" id="7Td-3N-9nd">
                             <connections>
                                 <segue destination="PpM-Q3-efA" kind="popoverPresentation" popoverAnchorBarButtonItem="7Td-3N-9nd" id="aJv-WP-GJS">
                                     <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
                                 </segue>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="69m-jf-NDU"/>
                     </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="577-7f-zjR" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -417,7 +451,7 @@
         <!--Login View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="LoginViewController" customModule="OnTheMap" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LoginViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BYZ-38-t0r" customClass="LoginViewController" customModule="OnTheMap" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>

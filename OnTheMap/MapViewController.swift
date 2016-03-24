@@ -14,6 +14,8 @@ import Foundation
 //  Created by Jason on 3/23/15.
 //  Copyright (c) 2015 Udacity. All rights reserved.
 //
+import FBSDKCoreKit
+import FBSDKLoginKit
 
 import UIKit
 import MapKit
@@ -34,22 +36,12 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIActionSheetDeleg
     
     var coordi = CLLocationCoordinate2D()
     var media = ""
-    var title_Name: String?
-    var createdAt : String = ""
-    var firstName : String = ""
-    var lastName : String = ""
-    var latitude : Int = 0
-    var longitude : Int = 0
-    var mapString : String = ""
-    var mediaURL : String = ""
-    var objectId : String = ""
-    var uniqueKey : String = ""
-    var updatedAt : String = ""
-    
+        
     // The map. See the setup in the Storyboard file. Note particularly that the view controller
     // is set up as the map view's delegate.
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var Pin: UIBarButtonItem!
+    @IBOutlet weak var activityController: UIActivityIndicatorView!
     
     
     
@@ -67,6 +59,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIActionSheetDeleg
         // used to create custom structs. Perhaps StudentLocation structs.
         
         //print(Api)
+        self.activityController.startAnimating()
         ParseClient.sharedInstance.getLocationData() { success, error in
             if (success == true){
                 for dictionary in ParseClient.sharedInstance.Api{
@@ -91,67 +84,50 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIActionSheetDeleg
             
                     // Finally we place the annotation in an array of annotations.
                     annotations.append(annotation)
+                    self.activityController.stopAnimating()
+                    self.activityController.hidden = true
                     
                     
                 }
             }
             else {
-                let alertView:UIAlertView = UIAlertView()
-                alertView.title = "Error"
-                alertView.message = error
-                alertView.delegate = self
-                alertView.addButtonWithTitle("OK")
-                alertView.show()
+                dispatch_async(dispatch_get_main_queue(), {
+                    let alertController = UIAlertController(title: "Invalid Login", message: error, preferredStyle: .Alert)
+                    let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
+                    }
+                    alertController.addAction(OKAction)
+                    
+                    self.presentViewController(alertController, animated: true) {
+                    }
+                })
             }
             
-            print(annotations.count)
+            //print(annotations.count)
             // When the array is complete, we add the annotations to the map.
             self.mapView.addAnnotations(annotations)
         }
     }
     
-    @IBAction func reloadData(sender: AnyObject) {
-        var annotations = [MKPointAnnotation]()
-        ParseClient.sharedInstance.getLocationData(){ success, error in
-            if (success == true){
-                for dictionary in ParseClient.sharedInstance.Api{
-                    //print(dictionary)
-                    // Notice that the float values are being used to create CLLocationDegree values.
-                    // This is a version of the Double type.
-                    let lat = CLLocationDegrees(dictionary.latitude)
-                    let long = CLLocationDegrees(dictionary.longitude)
-                    
-                    // The lat and long are used to create a CLLocationCoordinates2D instance.
-                    let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
-                    
-                    let first = dictionary.firstName
-                    let last = dictionary.lastName
-                    let mediaURL = dictionary.mediaURL
-                    
-                    // Here we create the annotation and set its coordiate, title, and subtitle properties
-                    let annotation = MKPointAnnotation()
-                    annotation.coordinate = coordinate
-                    annotation.title = "\(first) \(last)"
-                    annotation.subtitle = mediaURL
-                    
-                    // Finally we place the annotation in an array of annotations.
-                    annotations.append(annotation)
-                    
-                    
+    @IBAction func logoutUdacity(sender: AnyObject) {
+        UdacityAPI.sharedInstance.logout(){ success, error in
+            if(success){
+                
+                dispatch_async(dispatch_get_main_queue()) {
+                    FBSDKLoginManager().logOut()
+                    let loginController = self.storyboard?.instantiateViewControllerWithIdentifier("LoginViewController") as! LoginViewController
+                    self.presentViewController(loginController, animated: true, completion: nil)
                 }
+            } else {
+                dispatch_async(dispatch_get_main_queue(), {
+                    let alertController = UIAlertController(title: "Invalid Login", message: error, preferredStyle: .Alert)
+                    let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
+                    }
+                    alertController.addAction(OKAction)
+                    
+                    self.presentViewController(alertController, animated: true) {
+                    }
+                })
             }
-            else {
-                let alertView:UIAlertView = UIAlertView()
-                alertView.title = "Error"
-                alertView.message = error
-                alertView.delegate = self
-                alertView.addButtonWithTitle("OK")
-                alertView.show()
-            }
-            
-            print(annotations.count)
-            // When the array is complete, we add the annotations to the map.
-            self.mapView.addAnnotations(annotations)
             
         }
     }

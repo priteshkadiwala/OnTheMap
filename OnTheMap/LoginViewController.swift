@@ -54,6 +54,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
             print(error.localizedDescription)
             return
         }
+        
         let detailController = self.storyboard!.instantiateViewControllerWithIdentifier("UITabBarController") as! UITabBarController//to access the picture in a detailed view
         self.presentViewController(detailController, animated: true, completion: nil)
 

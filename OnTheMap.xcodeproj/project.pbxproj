@@ -134,11 +134,11 @@
 				2C5091281BE826430066AEF2 /* Main.storyboard */,
 				2C5AE8EA1BF9554600FA563C /* MapViewController.swift */,
 				2C9C3E941C52D9DD0072A689 /* parseAPI.swift */,
+				2C01120D1BFAA60600926DF1 /* ListViewController.swift */,
 				2CFEA8C81C90A9D7001ACC18 /* nameStruct.swift */,
 				2C50912B1BE826430066AEF2 /* Assets.xcassets */,
 				2C50912D1BE826430066AEF2 /* LaunchScreen.storyboard */,
 				2C5091301BE826430066AEF2 /* Info.plist */,
-				2C01120D1BFAA60600926DF1 /* ListViewController.swift */,
 			);
 			path = OnTheMap;
 			sourceTree = "<group>";

@@ -26,14 +26,13 @@ class ListViewController: UITableViewController{
     
     override func viewWillAppear(animated: Bool) {
         ParseClient.sharedInstance.getLocationData(){ success, error in
-            if (success){
-                dispatch_async(dispatch_get_main_queue()) {
+            dispatch_async(dispatch_get_main_queue()) {
+                if (success){
+                    
                     self.tableView.reloadData()
-                }
-                
-                
-            } else{
-                dispatch_async(dispatch_get_main_queue(), {
+                    
+                } else{
+                    
                     let alertController = UIAlertController(title: "Invalid Login", message: error, preferredStyle: .Alert)
                     let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
                     }
@@ -41,8 +40,10 @@ class ListViewController: UITableViewController{
                     
                     self.presentViewController(alertController, animated: true) {
                     }
-                })
+                    
+                }
             }
+            
             
         }
     }

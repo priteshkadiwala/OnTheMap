@@ -96,9 +96,7 @@
                         <barButtonItem key="rightBarButtonItem" tag="1" title="Pin" id="QhX-N9-GTk">
                             <connections>
                                 <action selector="Pin:" destination="8MM-Dk-Xg6" id="51B-53-rAx"/>
-                                <segue destination="PpM-Q3-efA" kind="popoverPresentation" popoverAnchorBarButtonItem="QhX-N9-GTk" id="mE6-8d-XRS">
-                                    <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
-                                </segue>
+                                <segue destination="PpM-Q3-efA" kind="presentation" id="mE6-8d-XRS"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -420,9 +418,7 @@
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Pin" id="7Td-3N-9nd">
                             <connections>
-                                <segue destination="PpM-Q3-efA" kind="popoverPresentation" popoverAnchorBarButtonItem="7Td-3N-9nd" id="aJv-WP-GJS">
-                                    <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
-                                </segue>
+                                <segue destination="PpM-Q3-efA" kind="presentation" id="aJv-WP-GJS"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -590,6 +586,7 @@
                     <connections>
                         <outlet property="Email" destination="2qB-Qf-r23" id="kJa-CL-5nS"/>
                         <outlet property="Password" destination="ZSu-Mw-TB8" id="46a-LW-yic"/>
+                        <outlet property="accSignup" destination="vgr-J0-aAt" id="qin-ad-uhG"/>
                         <outlet property="loginButton" destination="GAU-UL-9zu" id="mYD-9a-eU6"/>
                         <segue destination="2aJ-DR-Wh1" kind="presentation" identifier="tabController" id="6wa-DR-RD6"/>
                     </connections>

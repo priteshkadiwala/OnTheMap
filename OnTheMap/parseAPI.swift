@@ -69,7 +69,6 @@ struct parseApi{
     
             myAPIArray.append(parseApi(dictionary: (item)))
         }
-        //print(myAPIArray)
         return myAPIArray
     }
     

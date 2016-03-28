@@ -7,13 +7,6 @@
 //
 
 import Foundation
-//
-//  ViewController.swift
-//  PinSample
-//
-//  Created by Jason on 3/23/15.
-//  Copyright (c) 2015 Udacity. All rights reserved.
-//
 import FBSDKCoreKit
 import FBSDKLoginKit
 
@@ -44,9 +37,12 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIActionSheetDeleg
     @IBOutlet weak var activityController: UIActivityIndicatorView!
     
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        
         // The "locations" array is an array of dictionary objects that are similar to the JSON
         // data that you can download from parse.
        
@@ -57,8 +53,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIActionSheetDeleg
         // The "locations" array is loaded with the sample data below. We are using the dictionaries
         // to create map annotations. This would be more stylish if the dictionaries were being
         // used to create custom structs. Perhaps StudentLocation structs.
-        
-        //print(Api)
+
         self.activityController.startAnimating()
         ParseClient.sharedInstance.getLocationData() { success, error in
             if (success == true){
@@ -84,11 +79,9 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIActionSheetDeleg
             
                     // Finally we place the annotation in an array of annotations.
                     annotations.append(annotation)
-                    self.activityController.stopAnimating()
-                    self.activityController.hidden = true
-                    
-                    
+                
                 }
+                
             }
             else {
                 dispatch_async(dispatch_get_main_queue(), {
@@ -102,9 +95,10 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIActionSheetDeleg
                 })
             }
             
-            //print(annotations.count)
             // When the array is complete, we add the annotations to the map.
             self.mapView.addAnnotations(annotations)
+            self.activityController.stopAnimating()
+            self.activityController.hidden = true
         }
     }
     
@@ -166,17 +160,9 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIActionSheetDeleg
         
         if control == annotationView.rightCalloutAccessoryView {
             let app = UIApplication.sharedApplication()
-            app.openURL(NSURL(string: ((annotationView.annotation!.subtitle)!)!)!)
+            app.openURL(NSURL(string: annotationView.annotation!.subtitle!!)!)
         }
     }
-    
-    
-    // MARK: - Sample Data
-    
-    // Some sample data. This is a dictionary that is more or less similar to the
-    // JSON data that you will download from Parse.
-    
-    
 
 }
 

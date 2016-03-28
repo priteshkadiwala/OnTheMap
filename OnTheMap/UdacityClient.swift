@@ -69,7 +69,7 @@ class UdacityAPI: NSObject {
         let task = session.dataTaskWithRequest(request) { data, response, error in
             if error == nil { // Handle error...
                 let newData = data!.subdataWithRange(NSMakeRange(5, data!.length - 5)) /* subset response data! */
-                //print(NSString(data: newData, encoding: NSUTF8StringEncoding))
+                
                 let findName = try! NSJSONSerialization.JSONObjectWithData(newData, options: .AllowFragments) as! NSDictionary
                 
                 if let user = findName.valueForKey("user") as? NSDictionary {
@@ -109,8 +109,6 @@ class UdacityAPI: NSObject {
         let session = NSURLSession.sharedSession()
         let task = session.dataTaskWithRequest(request) { data, response, error in
             
-            //let newData = data!.subdataWithRange(NSMakeRange(5, data!.length - 5)) /* subset response data! */
-            //print(NSString(data: newData, encoding: NSUTF8StringEncoding))
             if error == nil {
                 self.userID = nil
                 completionHandler(success: true, errorMessage: nil)

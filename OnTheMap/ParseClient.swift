@@ -30,10 +30,10 @@ class ParseClient: NSObject {
         request.HTTPMethod = "GET"
         let session = NSURLSession.sharedSession()
         let task = session.dataTaskWithRequest(request) { data, response, error in
-            if error == nil { // Handle error...
+            if error == nil {
                 let someData:AnyObject? = try! NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers)
                 if let results = someData!.valueForKey("results") as? [[String : AnyObject]] {
-                    // here somethingElse should get [[String : AnyObject]] as input parameter.
+                    
                     self.Api = parseApi.downloadLocation(results)
                     completionHandler(success: true, error: nil)
                     
@@ -43,14 +43,7 @@ class ParseClient: NSObject {
             } else {
                 completionHandler(success: false, error: "Network error!")
             }
-            
-            //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
-            
-            
-            
-            //completionHandler(Dict)
-            //print(Api)
-            
+
         }
         task.resume()
         
@@ -77,7 +70,7 @@ class ParseClient: NSObject {
                 
                 completionHandler(success: true, error: nil)
             }
-            //print(NSString(data: data!, encoding: NSUTF8StringEncoding))
+            
         }
         task.resume()
         

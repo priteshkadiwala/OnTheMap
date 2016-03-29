@@ -19,25 +19,14 @@ class pinViewController: UIViewController, MKMapViewDelegate{
     var longitude = Double()
     var userID = String()
 
+    var findPlace: CLGeocoder = CLGeocoder()
+
     @IBOutlet weak var linkText: UITextField!
     @IBOutlet weak var acitivityController: UIActivityIndicatorView!
     
     var text = ""
     
     @IBOutlet weak var mapView: MKMapView!
-    
-    var annotation:MKAnnotation!
-    var localSearchRequest:MKLocalSearchRequest!
-    var localSearch:MKLocalSearch!
-    var localSearchResponse:MKLocalSearchResponse!
-    var error:NSError!
-    var pointAnnotation:MKPointAnnotation!
-    var pinAnnotationView:MKPinAnnotationView!
-    
-    
-
-    
-    
     
     override func viewDidLoad() {
         
@@ -46,29 +35,39 @@ class pinViewController: UIViewController, MKMapViewDelegate{
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
         view.addGestureRecognizer(tap)
         
-        localSearchRequest = MKLocalSearchRequest()
-        localSearchRequest.naturalLanguageQuery = text
-        localSearch = MKLocalSearch(request: localSearchRequest)
-        localSearch.startWithCompletionHandler { (localSearchResponse, error) -> Void in
-        
-            if localSearchResponse == nil{
-                let alertController = UIAlertController(title: nil, message: "Place Not Found", preferredStyle: UIAlertControllerStyle.Alert)
-                alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default, handler: nil))
-                self.presentViewController(alertController, animated: true, completion: nil)
-                return
+        findPlace.geocodeAddressString(text) { placemarks, error in
+            if error == nil {
+                if let placemark = placemarks![0] as? CLPlacemark {
+                    let coordinates = placemark.location!.coordinate
+                    
+                    //Setup data for submission
+                    self.latitude = coordinates.latitude as Double
+                    self.longitude = coordinates.longitude as Double
+                    self.mapString = self.text
+                    
+                    let region = MKCoordinateRegionMake(coordinates, MKCoordinateSpanMake(0.5, 0.5))
+                    let annotation = MKPointAnnotation()
+                    annotation.coordinate = coordinates
+                    self.mapView.addAnnotation(annotation)
+                    
+                    //Reconfigure display
+                    dispatch_async(dispatch_get_main_queue()) {
+                        
+                        self.mapView.alpha = 1.0
+                        self.mapView.setRegion(region, animated: true)
+                    }
+                }
+            } else {
+                let alert = UIAlertController(title: "Can't get there from here.", message: "Sorry we couldn't find that location.", preferredStyle: .Alert)
+                let dismissAction = UIAlertAction(title: "OK", style: .Default) { (action) in
+                    self.acitivityController.stopAnimating()
+                }
+                alert.addAction(dismissAction)
+                dispatch_async(dispatch_get_main_queue()) {
+                    self.presentViewController(alert, animated: true, completion: nil)
+                }
+                
             }
-            
-            self.pointAnnotation = MKPointAnnotation()
-            self.pointAnnotation.title = self.text
-            self.pointAnnotation.coordinate = CLLocationCoordinate2D(latitude: localSearchResponse!.boundingRegion.center.latitude, longitude:     localSearchResponse!.boundingRegion.center.longitude)
-            
-            
-            self.pinAnnotationView = MKPinAnnotationView(annotation: self.pointAnnotation, reuseIdentifier: nil)
-            self.mapView.centerCoordinate = self.pointAnnotation.coordinate
-            self.mapView.addAnnotation(self.pinAnnotationView.annotation!)
-            self.acitivityController.stopAnimating()
-            self.acitivityController.hidden = true
-            
         }
     
         
@@ -79,14 +78,13 @@ class pinViewController: UIViewController, MKMapViewDelegate{
     }
     
     @IBAction func cancel(sender: AnyObject) {
-        let detailController = self.storyboard!.instantiateViewControllerWithIdentifier("UITabBarController") as! UITabBarController//to access the picture in a detailed view
-        self.presentViewController(detailController, animated: true, completion: nil)
+        self.dismissViewControllerAnimated(true, completion: nil)
         
     }
     
     @IBAction func submit(sender: UIButton) {
         
-        let postData = "{\"uniqueKey\": \"\(UdacityAPI.sharedInstance.userID!)\", \"firstName\": \"\((UdacityAPI.sharedInstance.name?.firstName)!)\", \"lastName\": \"\((UdacityAPI.sharedInstance.name?.lastName)!)\",\"mapString\": \"\(text)\", \"mediaURL\": \"\(linkText.text!)\",\"latitude\": \(self.pointAnnotation.coordinate.latitude), \"longitude\": \(self.pointAnnotation.coordinate.latitude)}"
+        let postData = "{\"uniqueKey\": \"\(UdacityAPI.sharedInstance.userID!)\", \"firstName\": \"\((UdacityAPI.sharedInstance.name?.firstName)!)\", \"lastName\": \"\((UdacityAPI.sharedInstance.name?.lastName)!)\",\"mapString\": \"\(text)\", \"mediaURL\": \"\(linkText.text!)\",\"latitude\": \(latitude), \"longitude\": \(longitude)}"
         
         ParseClient.sharedInstance.postLocationData(postData){ success, error in
             if(success){
@@ -116,8 +114,6 @@ class pinViewController: UIViewController, MKMapViewDelegate{
             let detail = segue.destinationViewController as! UITabBarController
             let nav = detail.viewControllers![0] as! UINavigationController
             let detailVC = nav.topViewController as! MapViewController
-            detailVC.coordi = self.pointAnnotation.coordinate
-            detailVC.media = linkText.text!
             
         }
     }

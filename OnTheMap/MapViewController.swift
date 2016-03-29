@@ -26,9 +26,7 @@ import MapKit
  */
 
 class MapViewController: UIViewController, MKMapViewDelegate, UIActionSheetDelegate {
-    
-    var coordi = CLLocationCoordinate2D()
-    var media = ""
+
         
     // The map. See the setup in the Storyboard file. Note particularly that the view controller
     // is set up as the map view's delegate.
@@ -39,6 +37,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIActionSheetDeleg
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        mapView.delegate = self
+        
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -165,11 +165,6 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIActionSheetDeleg
     }
 
 }
-
-
-
-
-
 
 
 

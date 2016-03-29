@@ -30,8 +30,7 @@ class placeViewController: UIViewController {
     }
     
     @IBAction func cancel(sender: AnyObject) {
-        let detailController = self.storyboard!.instantiateViewControllerWithIdentifier("UITabBarController") as! UITabBarController//to access the picture in a detailed view
-        self.presentViewController(detailController, animated: true, completion: nil)
+        self.dismissViewControllerAnimated(true, completion: nil)
         
     }
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

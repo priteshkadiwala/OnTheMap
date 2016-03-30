@@ -10,7 +10,7 @@ import Foundation
 
 
 
-struct parseApi{
+struct StudentData{
     
     var createdAt : String
     var firstName : String
@@ -63,11 +63,11 @@ struct parseApi{
             
     }
     
-    static func downloadLocation(Dict: [[String: AnyObject]]) -> [parseApi] {
-        var myAPIArray = [parseApi]()
+    static func downloadLocation(Dict: [[String: AnyObject]]) -> [StudentData] {
+        var myAPIArray = [StudentData]()
         for item in Dict{
     
-            myAPIArray.append(parseApi(dictionary: (item)))
+            myAPIArray.append(StudentData(dictionary: (item)))
         }
         return myAPIArray
     }

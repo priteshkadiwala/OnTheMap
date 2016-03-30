@@ -52,15 +52,17 @@ class pinViewController: UIViewController, MKMapViewDelegate{
                     
                     //Reconfigure display
                     dispatch_async(dispatch_get_main_queue()) {
-                        
+                        self.acitivityController.stopAnimating()
+                        self.acitivityController.hidden = true
                         self.mapView.alpha = 1.0
                         self.mapView.setRegion(region, animated: true)
                     }
                 }
             } else {
-                let alert = UIAlertController(title: "Can't get there from here.", message: "Sorry we couldn't find that location.", preferredStyle: .Alert)
+                let alert = UIAlertController(title: "Invalid Location.", message: "Sorry we couldn't find that location.", preferredStyle: .Alert)
                 let dismissAction = UIAlertAction(title: "OK", style: .Default) { (action) in
                     self.acitivityController.stopAnimating()
+                    self.dismissViewControllerAnimated(true, completion: nil)
                 }
                 alert.addAction(dismissAction)
                 dispatch_async(dispatch_get_main_queue()) {
@@ -84,20 +86,43 @@ class pinViewController: UIViewController, MKMapViewDelegate{
     
     @IBAction func submit(sender: UIButton) {
         
-        let postData = "{\"uniqueKey\": \"\(UdacityAPI.sharedInstance.userID!)\", \"firstName\": \"\((UdacityAPI.sharedInstance.name?.firstName)!)\", \"lastName\": \"\((UdacityAPI.sharedInstance.name?.lastName)!)\",\"mapString\": \"\(text)\", \"mediaURL\": \"\(linkText.text!)\",\"latitude\": \(latitude), \"longitude\": \(longitude)}"
-        
-        ParseClient.sharedInstance.postLocationData(postData){ success, error in
-            if(success){
-                print("did post")
-                self.dismissViewControllerAnimated(true, completion: nil)
-            }
-            else{
-                let alert = UIAlertController(title: "Error", message: error, preferredStyle: UIAlertControllerStyle.Alert)
-                let dismissAction = UIAlertAction(title: "OK", style: .Default) { (action) in }
-                alert.addAction(dismissAction)
+        if let text = linkText.text where text.isEmpty{
+            let alert = UIAlertController(title: "Error", message: "Please enter a link!", preferredStyle: UIAlertControllerStyle.Alert)
+            let dismissAction = UIAlertAction(title: "OK", style: .Default) { (action) in
                 
-                dispatch_async(dispatch_get_main_queue()) {
-                    self.presentViewController(alert, animated: true, completion: nil)
+            }
+            alert.addAction(dismissAction)
+            
+            dispatch_async(dispatch_get_main_queue()) {
+                self.presentViewController(alert, animated: true, completion: nil)
+            }
+        } else{
+        
+            let postData = "{\"uniqueKey\": \"\(UdacityAPI.sharedInstance.userID!)\", \"firstName\": \"\((UdacityAPI.sharedInstance.name?.firstName)!)\", \"lastName\": \"\((UdacityAPI.sharedInstance.name?.lastName)!)\",\"mapString\": \"\(text)\", \"mediaURL\": \"\(linkText.text!)\",\"latitude\": \(latitude), \"longitude\": \(longitude)}"
+        
+            ParseClient.sharedInstance.postLocationData(postData){ success, error in
+                if(success){
+                    let alert = UIAlertController(title: "Success", message: "Successfully posted :)", preferredStyle: UIAlertControllerStyle.Alert)
+                    let dismissAction = UIAlertAction(title: "OK", style: .Default) { (action) in
+                        self.dismissViewControllerAnimated(true, completion: nil)
+                    }
+                    alert.addAction(dismissAction)
+                    
+                    dispatch_async(dispatch_get_main_queue()) {
+                        self.presentViewController(alert, animated: true, completion: nil)
+                    }
+                   
+                }
+                else{
+                    let alert = UIAlertController(title: "Error", message: error, preferredStyle: UIAlertControllerStyle.Alert)
+                    let dismissAction = UIAlertAction(title: "OK", style: .Default) { (action) in
+                        self.dismissViewControllerAnimated(true, completion: nil)
+                    }
+                    alert.addAction(dismissAction)
+                    
+                    dispatch_async(dispatch_get_main_queue()) {
+                        self.presentViewController(alert, animated: true, completion: nil)
+                    }
                 }
             }
         }

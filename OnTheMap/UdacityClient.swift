@@ -13,7 +13,7 @@ class UdacityAPI: NSObject {
     static let sharedInstance = UdacityAPI()
     
     var userID: String?
-    var name: nameStruct?
+    var name: NameStruct?
     
     func checkLogin(email: String, password: String, completionHandler: (success: Bool, error: String?) -> Void){
         
@@ -73,7 +73,7 @@ class UdacityAPI: NSObject {
                 let findName = try! NSJSONSerialization.JSONObjectWithData(newData, options: .AllowFragments) as! NSDictionary
                 
                 if let user = findName.valueForKey("user") as? NSDictionary {
-                    self.name = nameStruct()
+                    self.name = NameStruct()
                     
                     if let last_name = user.valueForKey("last_name") as? String{
                         self.name?.lastName = last_name

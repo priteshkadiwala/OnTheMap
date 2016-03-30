@@ -11,10 +11,10 @@ import Foundation
 class ParseClient: NSObject {
     
     static let sharedInstance = ParseClient()
-    var Api = [parseApi]()
+    var Api = [StudentData]()
     
     override init() {
-        Api = [parseApi]()
+        Api = [StudentData]()
         super.init()
     }
     
@@ -34,7 +34,7 @@ class ParseClient: NSObject {
                 let someData:AnyObject? = try! NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers)
                 if let results = someData!.valueForKey("results") as? [[String : AnyObject]] {
                     
-                    self.Api = parseApi.downloadLocation(results)
+                    self.Api = StudentData.downloadLocation(results)
                     completionHandler(success: true, error: nil)
                     
                 } else{
@@ -75,6 +75,14 @@ class ParseClient: NSObject {
         task.resume()
         
         
+    }
+    
+    func checkGetLocation(data: Bool, completionHandler: (success: Bool, error: String?) -> Void){
+        if(data){
+            completionHandler(success: true, error: nil)
+        } else{
+            completionHandler(success: false, error: "Error posting the pins")
+        }
     }
 
     

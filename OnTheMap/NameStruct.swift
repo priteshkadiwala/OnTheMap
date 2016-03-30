@@ -10,7 +10,7 @@ import Foundation
 
 
 
-struct nameStruct{
+struct NameStruct{
     
     var firstName = ""
     var lastName = ""

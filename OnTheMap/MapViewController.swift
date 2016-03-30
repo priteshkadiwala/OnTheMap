@@ -46,7 +46,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIActionSheetDeleg
         // The "locations" array is an array of dictionary objects that are similar to the JSON
         // data that you can download from parse.
        
-        
+        var data: Bool = true
         // We will create an MKPointAnnotation for each dictionary in "locations". The
         // point annotations will be stored in this array, and then provided to the map view.
         var annotations = [MKPointAnnotation]()
@@ -81,6 +81,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIActionSheetDeleg
                     annotations.append(annotation)
                 
                 }
+                data = true
                 
             }
             else {
@@ -93,13 +94,34 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIActionSheetDeleg
                     self.presentViewController(alertController, animated: true) {
                     }
                 })
+                data = false
+            }
+            ParseClient.sharedInstance.checkGetLocation(data){ success, error in
+                if(success){
+                    dispatch_async(dispatch_get_main_queue(), {
+                        // When the array is complete, we add the annotations to the map.
+                        self.mapView.addAnnotations(annotations)
+                    })
+                    
+                    self.activityController.stopAnimating()
+                    self.activityController.hidden = true
+                    
+                } else{
+                    dispatch_async(dispatch_get_main_queue(), {
+                        let alertController = UIAlertController(title: "Invalid Login", message: error, preferredStyle: .Alert)
+                        let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
+                        }
+                        alertController.addAction(OKAction)
+                        
+                        self.presentViewController(alertController, animated: true) {
+                        }
+                    })
+                }
             }
             
-            // When the array is complete, we add the annotations to the map.
-            self.mapView.addAnnotations(annotations)
-            self.activityController.stopAnimating()
-            self.activityController.hidden = true
+        
         }
+        
     }
     
     @IBAction func logoutUdacity(sender: AnyObject) {

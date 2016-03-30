@@ -40,11 +40,8 @@ class ListViewController: UITableViewController{
                     
                     self.presentViewController(alertController, animated: true) {
                     }
-                    
                 }
             }
-            
-            
         }
     }
     
